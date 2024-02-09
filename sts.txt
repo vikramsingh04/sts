@@ -1,0 +1,356 @@
+StockSpan 
+
+import java.util.*; 
+ 
+public class stockspan { 
+    public static int[] cal(int[] prices) { 
+        int n = prices.length; 
+        int[] span = new int[n]; 
+        Stack<Integer> s = new Stack<>(); 
+        for (int i = 0; i < n; i++) { 
+            while (!s.isEmpty() && prices[i] >= prices[s.peek()]) { 
+                s.pop(); 
+            } 
+ 
+            if (s.isEmpty()) { 
+                span[i] = i + 1; 
+            } else { 
+                span[i] = i - s.peek(); 
+            } 
+            s.push(i); 
+ 
+        } 
+        return span; 
+ 
+    } 
+ 
+    public static void main(String[] args) { 
+        Scanner sc = new Scanner(System.in); 
+        int n = sc.nextInt(); 
+        int[] prices = new int[n]; 
+        for (int i = 0; i < n; i++) { 
+            prices[i] = sc.nextInt(); 
+        } 
+        int span[] = cal(prices); 
+        for (int s : span) { 
+            System.out.print(s + " "); 
+        } 
+    } 
+} 
+
+
+
+Tower of Honoi 
+
+public class pratice{ 
+    static void practice(int n , char a,char b, char c){ 
+        if(n==1){ 
+            System.out.println("move disk 1 from "+a +" to rod "+b); 
+            return; 
+        } 
+        practice(n - 1, a, c, b); 
+        System.out.println("move disk " + n + " from "+a+ " to "+c); 
+        practice( n-1, c, b, a); 
+    } 
+ 
+    public static void main(String [] args){ 
+        int np=14; 
+        practice(np,'A','B','C'); 
+    } 
+} 
+
+
+Segregate Even & Odd 
+
+import java.util.*; 
+ 
+class Node{ 
+    int data; 
+    Node next; 
+ 
+    Node(int data){ 
+        this.data=data; 
+        this.next=null; 
+    } 
+} 
+ 
+public class lab3{ 
+    static Node seg(Node head){ 
+        Node even =new Node(0), odd =new Node(0); 
+        Node evenTail=even ,oddtail=odd; 
+        while(head!= null){ 
+            if(head.data%2==0){ 
+                evenTail=evenTail.next=head; 
+            } 
+            else{ 
+                oddtail=oddtail.next=head; 
+ 
+            } 
+            head= head.next; 
+        } 
+        evenTail.next=odd.next; 
+        oddtail.next=null; 
+        return even.next; 
+    } 
+ 
+    static void print(Node head){ 
+        while(head!=null){ 
+            System.out.println(head.data+" "); 
+            head=head.next; 
+        } 
+        System.out.println(); 
+    } 
+ 
+    public static void main(String [] args){ 
+        Scanner sc =new Scanner(System.in); 
+        System.out.println("Enter the number of the element in the linked list 
+"); 
+        int n=sc.nextInt(); 
+        Node head = new Node(0); 
+        Node tail = head ; 
+        for (int i=0;i<n;i++){ 
+            tail= tail.next= new Node(sc.nextInt()); 
+        } 
+        System.out.println("Original Linkedlist "); 
+        print(head.next); 
+         
+        Node seglist= seg(head.next); 
+        System.out.println("Linkedlist after segmentation"); 
+        print(seglist); 
+ 
+    } 
+} 
+
+
+Celeb
+
+import java.util.*; 
+public class celebrity { 
+    public static int celebritySolution(int[][] mat) { 
+        Stack<Integer> stk = new Stack<>(); 
+        for(int i=0;i<mat.length;i++) { 
+            stk.push(i); 
+        } 
+        while(stk.size() > 1) { 
+            int col = stk.pop(); 
+            int row = stk.pop(); 
+            if(mat[row][col] == 1) 
+     { 
+                stk.push(col);  
+            }  
+    else { 
+                stk.push(row);  
+            } 
+        } 
+        int x = stk.pop(); 
+        for(int j=0;j<mat.length;j++) { 
+            if(j == x) continue; 
+            if(mat[x][j] == 1) { 
+                return -1; 
+            } 
+        } 
+         
+        for(int i=0;i<mat.length;i++) { 
+            if(i == x) continue; 
+            if(mat[i][x] == 0) { 
+                return -1; 
+            } 
+        } 
+        return x; 
+    } 
+    public static void main(String[] args) { 
+        Scanner sc=new Scanner(System.in); 
+        int n=sc.nextInt(); 
+        int matrix[][]=new int[n][n]; 
+        for(int i=0;i<n;i++) 
+        { 
+            for(int j=0;j<n;j++) 
+            { 
+                matrix[i][j]=sc.nextInt(); 
+            } 
+        } 
+        int res = celebritySolution(matrix); 
+        if(res == -1) { 
+            System.out.println("There is no celebrity in the party"); 
+        } else { 
+            System.out.println(res + " is the celebrity in the party"); 
+        } 
+    } 
+} 
+
+
+Stack Permutation 
+
+
+import java.util.*;
+class lab12 { 
+    static Boolean check(int ip[], int op[], int n){ 
+        Stack<Integer> s = new Stack<Integer>(); 
+        int j = 0; 
+        for (int i = 0; i < n; i++) { 
+            s.push(ip[i]); 
+            while (!s.isEmpty() && s.peek() == op[j]) { 
+                s.pop(); 
+                j++; 
+            } 
+        } 
+        if (s.isEmpty()) 
+            return true; 
+        return false; 
+    } 
+         
+    public static void main(String args[]){ 
+        Scanner sc=new Scanner (System.in); 
+        int n=sc.nextInt(); 
+        int input[]=new int[n]; 
+        int output[]=new int[n]; 
+        for(int i=0;i<n;i++) 
+                input[i]=sc.nextInt(); 
+        for(int i=0;i<n;i++) 
+                output[i]=sc.nextInt(); 
+        if (check(input, output, n)) 
+            System.out.println("Yes"); 
+        else 
+            System.out.println("Not Possible"); 
+    } 
+} 
+
+
+Sliding window 
+
+import java.util.*; 
+ 
+class Main{ 
+    public static void main(String args[]){ 
+        Scanner sc=new Scanner(System.in); 
+        int a=sc.nextInt(); 
+        int n=sc.nextInt(); 
+        int arr[]=new int[n]; 
+         for(int i=0;i<n;i++){ 
+             arr[i]=sc.nextInt(); 
+         } 
+         
+        Queue<Integer> qu=new LinkedList<Integer>(); 
+        int i=0; 
+         
+        for(int x : arr){ 
+qu.add(x); 
+i++; 
+if(i>=a){ 
+System.out.printf("%d ", Collections.max(qu)); 
+qu.remove(); 
+} 
+} 
+} 
+} 
+
+
+Stack operations
+
+import java.util.Stack;
+
+public class MinStack {
+    private Stack<Integer> stack = new Stack<>();
+    private Stack<Integer> minStack = new Stack<>();
+
+    public void push(int x) {
+        stack.push(x);
+        if (minStack.isEmpty() || x <= getMin()) {
+            minStack.push(x);
+        }
+    }
+
+    public void pop() {
+        if (stack.pop().equals(minStack.peek())) {
+            minStack.pop();
+        }
+    }
+
+    public int top() {
+        return stack.peek();
+    }
+
+    public int getMin() {
+        return minStack.peek();
+    }
+}
+
+
+Merge, Sort without extra space
+
+import java.util.Arrays;
+
+class GFG {
+	public static void main(String args[])
+	{
+		int[] arr = { 5, -2, 23, 7, 87, -42, 509 };
+		System.out.println("The original array is: ");
+		for (int num : arr) {
+			System.out.print(num + " ");
+		}
+		Arrays.sort(arr);
+		System.out.println("\nThe sorted array is: ");
+		for (int num : arr) {
+			System.out.print(num + " ");
+		}
+	}
+}
+
+
+
+
+Priority Queue
+
+import java.util.*;
+    public class Main{
+        public static void main(String args[]){
+            Scanner sc=new Scanner(System.in);
+             PriorityQueue<Map.Entry<String, Integer>> priorityQueue = new PriorityQueue<>(Comparator.comparingInt(Map.Entry::getValue));
+             int n = sc.nextInt();
+               for (int i = 0; i < n; i++) {
+                String str = sc.next();
+                int priority = sc.nextInt();
+                priorityQueue.offer(new AbstractMap.SimpleEntry<>(str, priority));
+            }
+             while (!priorityQueue.isEmpty()) {
+                Map.Entry<String, Integer> entry = priorityQueue.poll();
+                System.out.println(entry.getKey());
+            }
+        }
+    }
+
+
+
+
+Loop detection
+
+import java.util.*;
+public class loop{
+    public static void main(String [] args){
+        Scanner obj = new Scanner(System.in);
+        int n = obj.nextInt();
+        int [] a = new int[n];
+        for(int i = 0;i<n;i++){
+            a[i] = obj.nextInt();
+        }
+        if(hasloop(a)){
+            System.out.println("yes");
+        }
+        else{
+            System.out.println("no");
+        }
+    }
+    public static boolean hasloop(int [] a){
+        Set<Integer> s = new HashSet<>();
+        for(int num : a){
+            if(s.contains(num)){
+                return true;
+            }
+            s.add(num);
+        }
+        return false;
+    }
+}
+
+
+
