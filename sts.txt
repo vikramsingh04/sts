@@ -352,5 +352,89 @@ public class loop{
     }
 }
 
+Merge sort
 
+
+import java.util.*;
+
+class Node{
+    Node next,prev;
+    int data;
+    Node(int d){
+        data = d;
+        prev = next =null;
+    }
+}
+class Main{
+    Node head;
+    void push(int new_data){
+        Node new_node = new Node(new_data);
+        if(head == null) head=new_node;
+        else{
+            Node last = head;
+            while(last.next!=null){
+                last=last.next;
+            }
+            last.next =new_node;
+            new_node.prev = last;
+        }
+    }
+
+    void printlist(Node node){
+        while(node != null){
+            System.out.print(node.data+" ");
+            node= node.next;
+        }
+    }
+
+    Node merge(Node first,Node second){
+        if(first == null) return second;
+        if(second == null) return first;
+        if(first.data < second.data){
+            first.next = merge(first.next,second);
+            first.next.prev = first;
+            first.prev = null;
+            return first;
+        }
+        else{
+            second.next = merge(first,second.next);
+            second.next.prev = second;
+            second.prev = null;
+            return second;
+        }
+    }
+
+    Node mergesort(Node node){
+        if(node==null || node.next==null) return node;
+        Node second = split(node);
+        node = mergesort(node);
+        second = mergesort(second);
+
+        return merge(node,second);
+    }
+
+    Node split(Node node){
+        Node fast = node, slow =node;
+        while(fast.next!=null && fast.next.next!=null){
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        Node temp =slow.next;
+        slow.next = null;
+        return temp;
+    }
+
+    public static void main(String args[]){
+        Main list = new Main();
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        for(int i = 0 ;i<n;i++){
+            list.push(sc.nextInt());
+        }
+        list.printlist(list.head);
+        System.out.println();
+        Node node = list.mergesort(list.head);
+        list.printlist(node);
+    }
+}
 
